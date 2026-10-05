@@ -17,6 +17,7 @@ Annotations are special markers (@Test, @BeforeMethod, etc.) placed above method
 @AfterMethod	          After every test method
 @AfterClass	            Once, after all tests in a class finish
 @AfterSuite	            Once, after the entire suite finishes
+
 Step 2:                 Test Execution
 
 TestNG runs tests based on annotation order (not just top-to-bottom in the file), and lets you control execution via an XML config file (testng.xml) instead of hardcoding which tests run.
@@ -42,6 +43,7 @@ Step 7: Reports
 TestNG automatically generates HTML/XML reports after execution, showing Pass/Fail/Skipped counts — useful for sharing results with the team without manually tracking every test.
 
 **3. Simple Example**
+
 java
 public class LoginTest {
     @BeforeMethod
@@ -67,9 +69,9 @@ Explanation: @BeforeMethod/@AfterMethod wrap every test (open/close browser each
 **4. Real-Time Project Scenario (Rentora)**
 Annotations + Execution Applied to Rentora
 java
-public class RentoraBookingTest {
 
-    WebDriver driver;
+    public class RentoraBookingTest {
+        WebDriver driver;
 
     @BeforeMethod
     public void setup() {
@@ -163,7 +165,9 @@ Total: 10 | Passed: 8 | Failed: 1 | Skipped: 1
 
 → You'd use this to report results to your project guide or team instead of manually listing which tests passed.
 
-5. How TestNG Connects to Everything You've Already Learned
+
+**5. How TestNG Connects to Everything You've Already Learned**
+
 TestNG Feature	Connects To
 Grouping (smoke/regression)	Smoke vs Regression Testing topic
 Data-Driven Testing	Boundary Value Analysis / Equivalence Partitioning
