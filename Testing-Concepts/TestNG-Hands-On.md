@@ -1,4 +1,4 @@
-TestNG — Explained with Rentora
+TestNG Explained with Rentora
 
 **1. Clean Definition**
 
