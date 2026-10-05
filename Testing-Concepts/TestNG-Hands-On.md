@@ -2,23 +2,24 @@ TestNG — Explained with Rentora
 
 **1. Clean Definition**
 
-TestNG (Test Next Generation) is a Java testing framework — similar to JUnit but with more powerful features — used to write, organize, and execute automated tests. It's commonly paired with Selenium for automation testing and is widely used in real companies for structuring large test suites.
+TestNG (Test Next Generation) is a Java testing framework — similar to JUnit but with more powerful features — used to write, organize, and execute automated tests. It's commonly paired with Selenium.
 
 **2. Step-by-Step Breakdown of Each Feature**
 Step 1: Annotations
 
 Annotations are special markers (@Test, @BeforeMethod, etc.) placed above methods to tell TestNG when and how to run them — without annotations, TestNG wouldn't know which methods are tests.
 
-*Annotation*	                     **When It Runs**
-@BeforeSuite	          Once, before the entire test suite
-@BeforeClass	          Once, before the first test in a class
-@BeforeMethod	          Before every test method
-@Test	                  The actual test method
-@AfterMethod	          After every test method
-@AfterClass	            Once, after all tests in a class finish
-@AfterSuite	            Once, after the entire suite finishes
+| *Annotation* | **When It Runs** |
+|---|---|
+| @BeforeSuite | Once, before the entire test suite |
+| @BeforeClass | Once, before the first test in a class |
+| @BeforeMethod | Before every test method |
+| @Test | The actual test method |
+| @AfterMethod | After every test method |
+| @AfterClass | Once, after all tests in a class finish |
+| @AfterSuite | Once, after the entire suite finishes |
 
-Step 2:                 Test Execution
+Step 2: Test Execution
 
 TestNG runs tests based on annotation order (not just top-to-bottom in the file), and lets you control execution via an XML config file (testng.xml) instead of hardcoding which tests run.
 
@@ -32,7 +33,7 @@ You can make one test depend on another passing first (e.g., "don't run Booking 
 
 Step 5: Data-Driven Testing
 
-Using @DataProvider, you can run the same test multiple times with different sets of input data — directly connects to your Boundary Value Analysis / Equivalence Partitioning topics, since you can feed multiple boundary values into one test automatically.
+Using @DataProvider, you can run the same test multiple times with different sets of input data — directly connects to your Boundary Value Analysis / Equivalence Partitioning topics.
 
 Step 6: Parallel Execution
 
@@ -44,7 +45,7 @@ TestNG automatically generates HTML/XML reports after execution, showing Pass/Fa
 
 **3. Simple Example**
 
-java
+```java
 public class LoginTest {
     @BeforeMethod
     public void setup() {
@@ -63,15 +64,16 @@ public class LoginTest {
         System.out.println("Closing browser..."); // runs after every test
     }
 }
+```
 
-Explanation: @BeforeMethod/@AfterMethod wrap every test (open/close browser each time). groups = {"smoke"} lets you run just smoke tests later. dependsOnMethods ensures testBookingAfterLogin only runs if login succeeded first — no point testing booking if login itself is broken.
+Explanation: @BeforeMethod/@AfterMethod wrap every test (open/close browser each time). groups = {"smoke"} lets you run just smoke tests later. dependsOnMethods ensures testBookingAfterLogin only runs if testValidLogin passed.
 
 **4. Real-Time Project Scenario (Rentora)**
 Annotations + Execution Applied to Rentora
-java
 
-    public class RentoraBookingTest {
-        WebDriver driver;
+```java
+public class RentoraBookingTest {
+    WebDriver driver;
 
     @BeforeMethod
     public void setup() {
@@ -97,15 +99,15 @@ java
     @AfterMethod
     public void teardown() {
         driver.quit();
-       }
     }
-
+}
+```
 
 **Data-Driven Testing Applied to Rentora's Date-Overlap Bug**
 
 Instead of writing separate test methods for each boundary value (0, 1, 29, 30, 31 days — from your BVA topic), you feed them all through one test using @DataProvider:
 
-java
+```java
 @DataProvider(name = "bookingDurations")
 public Object[][] getDurations() {
     return new Object[][] {
@@ -121,11 +123,13 @@ public void testBookingDuration(int days, boolean expectedResult) {
     boolean actualResult = bookingService.isValidDuration(days);
     Assert.assertEquals(actualResult, expectedResult);
 }
+```
 
 → This runs the same test 4 times, once per row — this is exactly how your BVA theory (from earlier) becomes real automated code, instead of manually writing 4 separate test methods.
 
 Grouping Applied to Rentora
-xml
+
+```xml
 <!-- testng.xml -->
 <suite name="RentoraSuite">
     <test name="SmokeTests">
@@ -139,11 +143,13 @@ xml
         </classes>
     </test>
 </suite>
+```
 
 → Before a new build is deployed, you'd run only the "smoke" group first (connects directly to your Smoke Testing topic) — if it passes, then you run the full "regression" group.
 
 Parallel Execution Applied to Rentora
-xml
+
+```xml
 <suite name="RentoraSuite" parallel="tests" thread-count="2">
     <test name="ChromeTest">
         <parameter name="browser" value="chrome"/>
@@ -154,6 +160,7 @@ xml
         <classes><class name="RentoraBookingTest"/></classes>
     </test>
 </suite>
+```
 
 → Runs the same booking tests on Chrome and Firefox simultaneously instead of one after another — cuts regression time in half.
 
@@ -168,10 +175,11 @@ Total: 10 | Passed: 8 | Failed: 1 | Skipped: 1
 
 **5. How TestNG Connects to Everything You've Already Learned**
 
-TestNG Feature	Connects To
-Grouping (smoke/regression)	Smoke vs Regression Testing topic
-Data-Driven Testing	Boundary Value Analysis / Equivalence Partitioning
-Dependencies	Test execution order, Retesting logic
-Reports	Pass/Fail metrics, test documentation
+| TestNG Feature | Connects To |
+|---|---|
+| Grouping (smoke/regression) | Smoke vs Regression Testing topic |
+| Data-Driven Testing | Boundary Value Analysis / Equivalence Partitioning |
+| Dependencies | Test execution order, Retesting logic |
+| Reports | Pass/Fail metrics, test documentation |
 
-This is a strong interview point: "I didn't just learn testing techniques in theory — I automated them using TestNG's @DataProvider to run BVA test cases for Rentora's booking duration, and used groups to separate smoke tests from full regression."
+This is a strong interview point: "I didn't just learn testing techniques in theory — I automated them using TestNG's @DataProvider to run BVA test cases for Rentora's booking duration, and used grouping to organize smoke vs regression tests."
