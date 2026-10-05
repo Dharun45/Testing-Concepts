@@ -183,3 +183,5 @@ Total: 10 | Passed: 8 | Failed: 1 | Skipped: 1
 | Reports | Pass/Fail metrics, test documentation |
 
 This is a strong interview point: "I didn't just learn testing techniques in theory — I automated them using TestNG's @DataProvider to run BVA test cases for Rentora's booking duration, and used grouping to organize smoke vs regression tests."
+
+```System.out.println('These all are key notes of TestNG');```
