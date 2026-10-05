@@ -5,6 +5,7 @@ TestNG — Explained with Rentora
 TestNG (Test Next Generation) is a Java testing framework — similar to JUnit but with more powerful features — used to write, organize, and execute automated tests. It's commonly paired with Selenium.
 
 **2. Step-by-Step Breakdown of Each Feature**
+
 Step 1: Annotations
 
 Annotations are special markers (@Test, @BeforeMethod, etc.) placed above methods to tell TestNG when and how to run them — without annotations, TestNG wouldn't know which methods are tests.
